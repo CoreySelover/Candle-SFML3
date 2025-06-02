@@ -2,20 +2,28 @@ cmake_minimum_required(VERSION 3.12)
 
 project(Candle)
 
-# set C++11 standard
-set(CMAKE_CXX_STANDARD 11)
+# set C++17 standard
+set(CMAKE_CXX_STANDARD 17)
 
 # set output files directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
 
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 
 # might need to set manually SFML_ROOT to the install location of SFML for Windows users
-# set(SFML_ROOT "")
-if(SFML_ROOT STREQUAL "")
-	find_package(SFML 2.5 REQUIRED COMPONENTS  graphics)
-endif()
+set(SFML_DIR "C:/Users/Corey/source/repos/SFML-3.0.0x64/lib/cmake/SFML")
+#if(SFML_ROOT STREQUAL "")
+	find_package(SFML 3.0.0 REQUIRED COMPONENTS  System Graphics)
+#endif()
 
 # if the user wants to use static SFML libs
 # set(SFML_STATIC_LIBRARIES TRUE)
