@@ -20,10 +20,10 @@ endif()
 
 
 # might need to set manually SFML_ROOT to the install location of SFML for Windows users
-set(SFML_DIR "C:/Users/Corey/source/repos/SFML-3.0.0x64/lib/cmake/SFML")
-#if(SFML_ROOT STREQUAL "")
+# set(SFML_DIR "C:/Path/To/SFML3/lib/cmake/SFML")
+if(SFML_ROOT STREQUAL "")
 	find_package(SFML 3.0.0 REQUIRED COMPONENTS  System Graphics)
-#endif()
+endif()
 
 # if the user wants to use static SFML libs
 # set(SFML_STATIC_LIBRARIES TRUE)
@@ -56,7 +56,7 @@ set(CANDLE_SRC
 # Static library target
 add_library(Candle-s STATIC ${CANDLE_SRC} ${CANDLE_HEADERS})
 target_include_directories(Candle-s PUBLIC include)
-target_link_libraries(Candle-s sfml-graphics)
+target_link_libraries(Candle-s sfml-graphics sfml-system)
 
 option(RADIAL_LIGHT_FIX "Use RadialLight fix for errors with textures" OFF)
 
