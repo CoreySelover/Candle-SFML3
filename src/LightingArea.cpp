@@ -11,7 +11,7 @@ namespace candle{
         sf::BlendMode::Equation::Add,             // color eq
         sf::BlendMode::Factor::Zero,              // alpha src
         sf::BlendMode::Factor::OneMinusSrcAlpha,  // alpha dst
-        sf::BlendMode::Equation::Add    );            // alpha eq
+        sf::BlendMode::Equation::Add);            // alpha eq
     
     void LightingArea::initializeRenderTexture(const sf::Vector2f& size){
         try { 
@@ -24,33 +24,31 @@ namespace candle{
         }
         m_renderTexture.setSmooth(true);
 
-        m_baseTextureTriangle1[0].position =
-        m_areaTriangle1[0].position =
-        m_areaTriangle1[0].texCoords = {0, 0};
-        m_baseTextureTriangle1[1].position =
-        m_areaTriangle1[1].position =
-        m_areaTriangle1[1].texCoords = {size.x, 0};
-        m_baseTextureTriangle1[2].position =
-        m_areaTriangle1[2].position =
-        m_areaTriangle1[2].texCoords = {size.x, size.y};
+        m_baseTextureTriangles[0].position =
+        m_areaTriangles[0].position =
+        m_areaTriangles[0].texCoords = {0, 0};
+        m_baseTextureTriangles[1].position =
+        m_areaTriangles[1].position =
+        m_areaTriangles[1].texCoords = {size.x, 0};
+        m_baseTextureTriangles[2].position =
+        m_areaTriangles[2].position =
+        m_areaTriangles[2].texCoords = {size.x, size.y};
 
-        m_baseTextureTriangle2[0].position =
-        m_areaTriangle2[0].position =
-        m_areaTriangle2[0].texCoords = { 0, 0 };
-        m_baseTextureTriangle2[1].position =
-        m_areaTriangle2[1].position =
-        m_areaTriangle2[1].texCoords = { size.x, size.y };
-        m_baseTextureTriangle2[2].position =
-        m_areaTriangle2[2].position =
-        m_areaTriangle2[2].texCoords = { 0, float(size.y) };
+        m_baseTextureTriangles[3].position =
+        m_areaTriangles[3].position =
+        m_areaTriangles[3].texCoords = { 0, 0 };
+        m_baseTextureTriangles[4].position =
+        m_areaTriangles[4].position =
+        m_areaTriangles[4].texCoords = { size.x, size.y };
+        m_baseTextureTriangles[5].position =
+        m_areaTriangles[5].position =
+        m_areaTriangles[5].texCoords = { 0, float(size.y) };
 
     }
     
     LightingArea::LightingArea(Mode mode, const sf::Vector2f& position, const sf::Vector2f& size)
-    : m_baseTextureTriangle1(sf::PrimitiveType::Triangles, 3)
-    , m_baseTextureTriangle2(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangle1(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangle2(sf::PrimitiveType::Triangles, 3)
+    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 3)
+    , m_areaTriangles(sf::PrimitiveType::Triangles, 3)
     , m_color(sf::Color::White)
     {
         m_opacity = 1;
@@ -61,10 +59,8 @@ namespace candle{
     }
     
     LightingArea::LightingArea(Mode mode, const sf::Texture* t, sf::FloatRect r)
-    : m_baseTextureTriangle1(sf::PrimitiveType::Triangles, 3)
-    , m_baseTextureTriangle2(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangle1(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangle2(sf::PrimitiveType::Triangles, 3)
+    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 3)
+    , m_areaTriangles(sf::PrimitiveType::Triangles, 3)
     , m_color(sf::Color::White)
     {
         m_opacity = 1;
@@ -73,17 +69,11 @@ namespace candle{
     }
     
     sf::FloatRect LightingArea::getLocalBounds () const{
-        // Because m_areaTriangle1's bounds include the top left 
-        // and bottom right corner of the "Quad" we're representing,
-        // we can simply return its bounds as an adequate stand-in.
-        return m_areaTriangle1.getBounds();
+        return m_areaTriangles.getBounds();
     }
     
     sf::FloatRect LightingArea::getGlobalBounds () const{
-        // Because m_areaTriangle1's bounds include the top left 
-        // and bottom right corner of the "Quad" we're representing,
-        // we can simply return its bounds as an adequate stand-in.
-        return Transformable::getTransform().transformRect(m_areaTriangle1.getBounds());
+        return Transformable::getTransform().transformRect(m_areaTriangles.getBounds());
     }
     
     void  LightingArea::draw(sf::RenderTarget& t, sf::RenderStates s) const{
@@ -93,16 +83,14 @@ namespace candle{
             }
             s.transform *= Transformable::getTransform();
             s.texture = &m_renderTexture.getTexture();
-            t.draw(m_areaTriangle1, s);
-            t.draw(m_areaTriangle2, s);
+            t.draw(m_areaTriangles, s);
         }
     }
     
     void LightingArea::clear(){
         if(m_baseTexture != nullptr){
             m_renderTexture.clear(sf::Color::Transparent);
-            m_renderTexture.draw(m_baseTextureTriangle1, m_baseTexture);
-            m_renderTexture.draw(m_baseTextureTriangle2, m_baseTexture);
+            m_renderTexture.draw(m_baseTextureTriangles, m_baseTexture);
         }else{
             m_renderTexture.clear(getActualColor());
         }
@@ -110,8 +98,7 @@ namespace candle{
     
     void LightingArea::setAreaColor(sf::Color c){
         m_color = c;
-        sfu::setColor(m_baseTextureTriangle1, getActualColor());
-        sfu::setColor(m_baseTextureTriangle2, getActualColor());
+        sfu::setColor(m_baseTextureTriangles, getActualColor());
     }
     
     sf::Color LightingArea::getAreaColor() const{
@@ -126,8 +113,7 @@ namespace candle{
     
     void LightingArea::setAreaOpacity(uint8_t o){
         m_opacity = o;
-        sfu::setColor(m_baseTextureTriangle1, getActualColor());
-        sfu::setColor(m_baseTextureTriangle2, getActualColor());
+        sfu::setColor(m_baseTextureTriangles, getActualColor());
     }
     
     float LightingArea::getAreaOpacity() const{
@@ -149,7 +135,7 @@ namespace candle{
             rect.size.x = float(texture->getSize().x);
             rect.size.y = float(texture->getSize().y);
         }
-        initializeRenderTexture(sf::Vector2f(rect.size.x, rect.size.y));
+        initializeRenderTexture(rect.size);
         setTextureRect(rect);
     }
     
@@ -158,13 +144,12 @@ namespace candle{
     }
     
     void LightingArea::setTextureRect(const sf::FloatRect& rect){
-        m_baseTextureTriangle1[0].texCoords = sf::Vector2f(rect.position.x, rect.position.y);
-        m_baseTextureTriangle1[1].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y);
-        m_baseTextureTriangle1[2].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y + rect.size.y);
-
-        m_baseTextureTriangle2[0].texCoords = sf::Vector2f(rect.position.x, rect.position.y);
-        m_baseTextureTriangle2[1].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y + rect.size.y);
-        m_baseTextureTriangle2[2].texCoords = sf::Vector2f(rect.position.x, rect.position.y + rect.size.y);
+        m_baseTextureTriangles[0].texCoords = sf::Vector2f(rect.position.x, rect.position.y);
+        m_baseTextureTriangles[1].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y);
+        m_baseTextureTriangles[2].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y + rect.size.y);
+        m_baseTextureTriangles[3].texCoords = sf::Vector2f(rect.position.x, rect.position.y);
+        m_baseTextureTriangles[4].texCoords = sf::Vector2f(rect.position.x + rect.size.x, rect.position.y + rect.size.y);
+        m_baseTextureTriangles[5].texCoords = sf::Vector2f(rect.position.x, rect.position.y + rect.size.y);
     }
     
     sf::IntRect LightingArea::getTextureRect() const{

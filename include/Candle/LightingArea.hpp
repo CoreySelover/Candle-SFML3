@@ -79,11 +79,9 @@ namespace candle{
     private:
         const sf::Texture* m_baseTexture;
         sf::IntRect m_baseTextureRect;
-        sf::VertexArray m_baseTextureTriangle1; // Use two Triangles to represent one Quad
-        sf::VertexArray m_baseTextureTriangle2;
+        sf::VertexArray m_baseTextureTriangles;
         sf::RenderTexture m_renderTexture;
-        sf::VertexArray m_areaTriangle1;
-        sf::VertexArray m_areaTriangle2;
+        sf::VertexArray m_areaTriangles;
         sf::Color m_color;
         uint8_t m_opacity;
         sf::Vector2f m_size;
