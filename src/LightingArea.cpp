@@ -15,7 +15,7 @@ namespace candle{
     
     void LightingArea::initializeRenderTexture(const sf::Vector2f& size){
         try { 
-            if (!m_renderTexture.resize({ uint16_t(size.x), uint16_t(size.y) }))
+            if (!m_renderTexture.resize({ uint32_t(size.x), uint32_t(size.y) }))
                 throw std::runtime_error("Failed to resize LightingArea RenderTexture!");
 
         }
