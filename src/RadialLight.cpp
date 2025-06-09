@@ -25,8 +25,8 @@ namespace candle{
         l_lightTextureFade.reset(new sf::RenderTexture);
         l_lightTexturePlain.reset(new sf::RenderTexture);
         try {
-            if (!l_lightTextureFade->resize({ uint16_t(BASE_RADIUS * 2 + 2), uint16_t(BASE_RADIUS * 2 + 2) })) throw std::runtime_error("LightTextureFade resize failed!");
-            if (!l_lightTexturePlain->resize({ uint16_t(BASE_RADIUS * 2 + 2), uint16_t(BASE_RADIUS * 2 + 2) })) throw std::runtime_error("LightTextureFade resize failed!");
+            if (!l_lightTextureFade->resize({ uint32_t(BASE_RADIUS * 2 + 2), uint32_t(BASE_RADIUS * 2 + 2) })) throw std::runtime_error("LightTextureFade resize failed!");
+            if (!l_lightTexturePlain->resize({ uint32_t(BASE_RADIUS * 2 + 2), uint32_t(BASE_RADIUS * 2 + 2) })) throw std::runtime_error("LightTextureFade resize failed!");
         }
         catch (const std::exception& e) {
             std::cerr << "Render texture resize error: " << e.what() << std::endl;
