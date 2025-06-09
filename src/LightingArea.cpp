@@ -47,8 +47,8 @@ namespace candle{
     }
     
     LightingArea::LightingArea(Mode mode, const sf::Vector2f& position, const sf::Vector2f& size)
-    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangles(sf::PrimitiveType::Triangles, 3)
+    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 6)
+    , m_areaTriangles(sf::PrimitiveType::Triangles, 6)
     , m_color(sf::Color::White)
     {
         m_opacity = 1;
@@ -59,8 +59,8 @@ namespace candle{
     }
     
     LightingArea::LightingArea(Mode mode, const sf::Texture* t, sf::FloatRect r)
-    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 3)
-    , m_areaTriangles(sf::PrimitiveType::Triangles, 3)
+    : m_baseTextureTriangles(sf::PrimitiveType::Triangles, 6)
+    , m_areaTriangles(sf::PrimitiveType::Triangles, 6)
     , m_color(sf::Color::White)
     {
         m_opacity = 1;
