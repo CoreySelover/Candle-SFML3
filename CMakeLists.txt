@@ -21,7 +21,7 @@ set(CANDLE_HEADERS
 	include/Candle/DirectedLight.hpp
 	include/Candle/geometry/Line.hpp
 	include/Candle/geometry/Polygon.hpp
-    include/Candle/geometry/Vector2.hpp
+        include/Candle/geometry/Vector2.hpp
 	include/Candle/graphics/Color.hpp
 	include/Candle/graphics/VertexArray.hpp
 	include/Candle/Constants.hpp
@@ -57,6 +57,6 @@ if (BUILD_DEMO)
 	set(DEMO_SRC demo.cpp)
 	add_executable(demo ${DEMO_SRC})
 	target_include_directories(demo PRIVATE include)
-	target_link_libraries(demo PRIVATE SFML::Graphics Candle-s)
+	target_link_libraries(demo PRIVATE SFML::Graphics SFML::System Candle-s)
 	target_compile_features(demo PRIVATE cxx_std_17)
 endif()
